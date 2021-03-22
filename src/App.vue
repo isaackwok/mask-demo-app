@@ -1,26 +1,33 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div id="app">
+    <!-- aside-menu 左側欄 -->
+    <aside-menu @triggerMarkerPopup="openPopup" ref="menu"/>
+    <!-- 地圖區塊 -->
+    <mask-map ref="map"/>
+    <light-box />
+  </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import asideMenu from "./components/asideMenu.vue";
+import lightBox from "./components/lightbox.vue";
+import maskMap from "./components/maskMap.vue";
 
+import { mapActions } from "vuex";
 export default {
+  components: { asideMenu, lightBox, maskMap },
   name: "App",
-  components: {
-    HelloWorld,
+  methods: {
+    openPopup(id) {
+      this.$refs.map.triggerPopup(id);
+    },
+    ...mapActions(["fetchLocations", "fetchPharmacies"]),
+  },
+  mounted() {
+    this.fetchLocations();
+    this.fetchPharmacies();
   },
 };
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style lang="scss" src="@/assets/style.scss"></style>
