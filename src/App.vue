@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <!-- aside-menu 左側欄 -->
-    <aside-menu @triggerMarkerPopup="openPopup" ref="menu"/>
+    <aside-menu @triggerMarkerPopup="openPopup" ref="menu" />
     <!-- 地圖區塊 -->
-    <mask-map ref="map"/>
+    <mask-map ref="map" />
     <light-box />
   </div>
 </template>

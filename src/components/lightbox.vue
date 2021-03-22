@@ -44,7 +44,9 @@
 
             <h2 class="title">地址: {{ currStore.address }}</h2>
             <h2 class="title">電話: {{ currStore.phone }}</h2>
-            <h2 v-if="currStore.custom_note" class="title">備註: {{ currStore.custom_note }}</h2>
+            <h2 v-if="currStore.custom_note" class="title">
+              備註: {{ currStore.custom_note }}
+            </h2>
           </div>
         </div>
       </div>

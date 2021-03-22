@@ -21,7 +21,12 @@
     </div>
 
     <ul class="store-lists">
-      <li class="store-info wraps" v-for="s in filteredStores" :key="s.id" @click="$emit('triggerMarkerPopup', s.id)">
+      <li
+        class="store-info wraps"
+        v-for="s in filteredStores"
+        :key="s.id"
+        @click="$emit('triggerMarkerPopup', s.id)"
+      >
         <h1 v-html="keywordHighlight(s.name)"></h1>
 
         <div class="mask-info">

@@ -76,8 +76,10 @@ export default createStore({
           );
     },
     currDistrictInfo(state, getters) {
-      return getters.districtList.find(d => d.name === state.currDistrict) || {};
-    }
+      return (
+        getters.districtList.find((d) => d.name === state.currDistrict) || {}
+      );
+    },
   },
   modules: {},
 });
