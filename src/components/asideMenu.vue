@@ -25,7 +25,7 @@
         class="store-info wraps"
         v-for="s in filteredStores"
         :key="s.id"
-        @click="$emit('triggerMarkerPopup', s.id)"
+        @click="triggerPopup(s.id)"
       >
         <h1 v-html="keywordHighlight(s.name)"></h1>
 
@@ -51,70 +51,42 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { inject, toRefs, watch } from "vue";
 export default {
   name: "asideMenu",
-  computed: {
-    currCity: {
-      get() {
-        return this.$store.state.currCity;
-      },
-      set(value) {
-        this.$store.commit("setCurrCity", value);
-      },
-    },
-    currDistrict: {
-      get() {
-        return this.$store.state.currDistrict;
-      },
-      set(value) {
-        this.$store.commit("setCurrDistrict", value);
-      },
-    },
-    keywords: {
-      get() {
-        return this.$store.state.keywords;
-      },
-      set(value) {
-        this.$store.commit("setKeywords", value);
-      },
-    },
-    showModal: {
-      get() {
-        return this.$store.state.showModal;
-      },
-      set(value) {
-        this.$store.commit("setShowModal", value);
-      },
-    },
-    infoBoxSid: {
-      get() {
-        return this.$store.state.infoBoxSid;
-      },
-      set(value) {
-        this.$store.commit("setInfoBoxSid", value);
-      },
-    },
-    ...mapState(["stores"]),
-    ...mapGetters(["cityList", "districtList", "filteredStores"]),
-  },
-  methods: {
-    keywordHighlight(val) {
+  setup() {
+    const mapStore = inject("mapStore");
+    const { state, setShowModal, setInfoBoxSid, setCurrDistrict } = mapStore;
+
+    const map = inject("map");
+    const { triggerPopup } = map;
+
+    const keywordHighlight = (val) => {
       return val.replace(
-        new RegExp(this.keywords, "g"),
-        `<span class="highlight">${this.keywords}</span>`
+        new RegExp(state.keywords, "g"),
+        `<span class="highlight">${state.keywords}</span>`
       );
-    },
-    openInfoBox(sid) {
-      this.showModal = true;
-      this.infoBoxSid = sid;
-    },
-  },
-  watch: {
-    districtList(v) {
-      const [arr] = v;
-      this.currDistrict = arr.name;
-    },
+    };
+
+    const openInfoBox = (sid) => {
+      setShowModal(true);
+      setInfoBoxSid(sid);
+    };
+
+    watch(
+      () => state.districtList,
+      (v) => {
+        const [arr] = v;
+        setCurrDistrict(arr.name);
+      }
+    );
+
+    return {
+      ...toRefs(state),
+      openInfoBox,
+      keywordHighlight,
+      triggerPopup,
+    };
   },
 };
 </script>

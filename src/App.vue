@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <!-- aside-menu 左側欄 -->
-    <aside-menu @triggerMarkerPopup="openPopup" ref="menu" />
+    <aside-menu />
     <!-- 地圖區塊 -->
-    <mask-map ref="map" />
+    <mask-map />
     <light-box />
   </div>
 </template>
@@ -13,19 +13,18 @@ import asideMenu from "./components/asideMenu.vue";
 import lightBox from "./components/lightbox.vue";
 import maskMap from "./components/maskMap.vue";
 
-import { mapActions } from "vuex";
+import mapStore from "@/composition/store.js";
+import map from "@/composition/map.js";
+import { provide } from "vue";
+
 export default {
   components: { asideMenu, lightBox, maskMap },
   name: "App",
-  methods: {
-    openPopup(id) {
-      this.$refs.map.triggerPopup(id);
-    },
-    ...mapActions(["fetchLocations", "fetchPharmacies"]),
-  },
-  mounted() {
-    this.fetchLocations();
-    this.fetchPharmacies();
+  setup() {
+    provide("mapStore", mapStore);
+    provide("map", map);
+    mapStore.fetchLocations();
+    mapStore.fetchPharmacies();
   },
 };
 </script>
